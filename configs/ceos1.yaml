@@ -23,7 +23,7 @@ spec:
     !
     username admin privilege 15 role network-admin secret sha512 $6$S1jDtSEN/M3/VEsP$fNT4jByGEaYNlEnDxw4qCAyV3dsc/JH5Q7nLLStzZIo0TwUQ3aPuIO2sqVXalm8K74ccIeWQSanzAU5zT9Nj31
     !
-    vlan 100,200,300,400,500,600
+    vlan 100,200,300,400,500,600,111,222,333
     !
     interface Ethernet1
       no switchport

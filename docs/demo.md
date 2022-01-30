@@ -41,7 +41,7 @@ https://argo-cd.readthedocs.io/en/stable/cli_installation/
 
 This all allow for any connections on the localhost to 8080 to forward to the kubernetes service for argocd.
 ```
-kubectl port-forward svc/argocd-server -n argocd 8080:443 &
+kubectl port-forward svc/argocd-server -n argocd 8080:443 --address 0.0.0.0 &
 ```
 
 connect to the gui at 127.0.0.1:8080
@@ -61,6 +61,9 @@ password: generated password from above.
 argocd login 127.0.0.1:8080
 ```
 
+![Alt text](/images/initial-login.jpg?raw=true "initial")
+
+
 ## Create the argo app deployment.
 
 ```
@@ -70,3 +73,41 @@ argocd app create network-config --repo https://github.com/burnyd/argocd-network
 --dest-namespace networkconfig \
 --sync-policy automated
 ```
+
+At this point we can see that Argo is monitoring our deployment of the ceos opperator and ready to deploy if there is a change!
+
+![Alt text](/images/init-app.jpg?raw=true "initial-app")
+
+![Alt text](/images/init-overview.jpg?raw=true "initial-overview")
+
+The interesting part here as well is that we can see that argo is effectively watching https://github.com/burnyd/argocd-network.git with every text/kubernetes yaml within the configs directory as the argocd application is supposed to do.
+
+So at this point we can go ahead and make a small change to configs/ceos1.yaml and add vlans to it.
+
+Current vlans
+
+```
+!
+vlan 100,200,300,400,500,600
+!
+```
+
+```
+ceos1#show vlan brief
+VLAN  Name                             Status    Ports
+----- -------------------------------- --------- -------------------------------
+1     default                          active
+100   VLAN0100                         active
+200   VLAN0200                         active
+300   VLAN0300                         active
+400   VLAN0400                         active
+500   VLAN0500                         active
+600   VLAN0600                         active
+```
+
+Changing the config at configs/ceos1.yaml and configs/ceos2.yaml to add vlans.
+
+```
+vlan 100,200,300,400,500,600,111,222,333
+```
+
