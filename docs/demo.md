@@ -111,3 +111,29 @@ Changing the config at configs/ceos1.yaml and configs/ceos2.yaml to add vlans.
 vlan 100,200,300,400,500,600,111,222,333
 ```
 
+
+We can see within argo it pushes it directly to the kubernetes cluster object netdevs in our scenario.
+
+![Alt text](/images/push.jpg?raw=true "push")
+
+Now the most interesting of all.. I did not have to touch any comand lines, apis or toolings.  This happened entirely out of git!  So within the argo sync message fb1c45e is my commit id.  It matches up with what git has.
+
+![Alt text](/images/git-app.jpg?raw=true "git-app")
+
+Checking the switches / ceos we can see that they did infact get the vlans from the operator.
+
+```
+ceos1#show vlan brief
+VLAN  Name                             Status    Ports
+----- -------------------------------- --------- -------------------------------
+1     default                          active
+100   VLAN0100                         active
+111   VLAN0111                         active
+200   VLAN0200                         active
+222   VLAN0222                         active
+300   VLAN0300                         active
+333   VLAN0333                         active
+400   VLAN0400                         active
+500   VLAN0500                         active
+600   VLAN0600                         active
+```
